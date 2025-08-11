@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maquetador de Moodle</title>
+  <meta name="description" content="Sitio informativo del trayecto Maquetador de Moodle. Unidades, resúmenes visuales, descripciones y descargas.">
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --ink:#0f172a;
+      --muted:#64748b;
+      --brand:#0ea5e9;
+      --brand-2:#22c55e;
+      --accent:#e2e8f0;
+      --ring:rgba(14,165,233,.35);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
+    body{
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,Cantarell,"Helvetica Neue",Arial,sans-serif;
+      background: radial-gradient(1200px 600px at 20% -10%, #e0f2fe 0%, transparent 60%) no-repeat, var(--bg);
+      color:var(--ink);
+      line-height:1.55;
+    }
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:auto;padding:24px}
+    header{
+      display:grid;gap:18px;align-items:center;
+      grid-template-columns: 140px 1fr;
+      padding:16px 0 0;
+    }
+    header img{max-width:100%;height:auto;object-fit:contain}
+    .brand-title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .brand-title h1{
+      margin:0;font-size:clamp(28px,3vw,40px);
+      font-weight:800;letter-spacing:.2px;
+      background: linear-gradient(90deg, #0ea5e9, #22c55e);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .tagline{color:var(--muted);font-size:14px;margin-top:-6px}
+    nav{
+      position:sticky;top:0;z-index:10;background:rgba(246,248,251,.7);
+      backdrop-filter: blur(8px);
+      border:1px solid var(--accent);
+      border-radius:14px;margin:18px 0;padding:6px;
+      display:flex;flex-wrap:wrap;gap:6px;justify-content:space-between;
+    }
+    .tabs{display:flex;gap:6px;flex-wrap:wrap}
+    .tab{
+      border-radius:12px;border:1px solid var(--accent);
+      padding:10px 14px;font-weight:600;font-size:14px;color:#0b1324;
+      background:#fff;transition:.2s ease;cursor:pointer
+    }
+    .tab:hover{box-shadow:0 2px 0 0 var(--accent) inset}
+    .cta{
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer
+    }
+    .hero{
+      display:grid;gap:22px;grid-template-columns:1.3fr .7fr;
+      background:linear-gradient(180deg,#fff, #f8fafc);
+      border:1px solid var(--accent);border-radius:var(--radius);padding:22px;
+      box-shadow:0 10px 30px -20px var(--ring);
+    }
+    .hero p{margin:0;color:var(--muted)}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      background:#ecfeff;border:1px solid #bae6fd;color:#0369a1;
+      border-radius:999px;padding:6px 10px;font-weight:700;font-size:12px
+    }
+    .hero-list{display:grid;gap:10px;margin-top:10px}
+    .hero-list li{list-style:none;display:flex;gap:10px;align-items:flex-start}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);margin-top:8px;flex:0 0 8px}
+    section{scroll-margin-top:90px}
+    .unit{
+      background:var(--card);border:1px solid var(--accent);border-radius:var(--radius);
+      padding:20px;margin:20px 0;box-shadow:0 12px 30px -24px var(--ring)
+    }
+    .unit h2{margin:0 0 6px;font-size:clamp(22px,2.6vw,30px)}
+    .unit .lead{color:var(--muted);margin:0 0 14px}
+    .grid{display:grid;gap:16px;grid-template-columns: 1.1fr 1fr}
+    .card{border:1px solid var(--accent);border-radius:18px;background:#fff;padding:16px}
+    .viz{display:grid;gap:12px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{
+      border:1px dashed #cbd5e1;border-radius:999px;padding:6px 10px;font-size:12px;color:#0b1324;background:#f8fafc
+    }
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .kpi{text-align:center;border:1px solid var(--accent);border-radius:12px;padding:10px;background:#fcfdff}
+    .kpi b{font-size:18px;display:block}
+    details{border:1px solid var(--accent);border-radius:14px;padding:10px;background:#fafcff}
+    summary{cursor:pointer;font-weight:700}
+    .downloads{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--accent);background:#0ea5e9;color:#fff;
+      padding:10px 14px;border-radius:12px;font-weight:700;text-decoration:none
+    }
+    .btn.secondary{background:#111827;color:#fff}
+    .footer{margin:40px 0 20px;color:var(--muted);font-size:14px;text-align:center}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      header{grid-template-columns:1fr}
+    }
+  
+    /* Enhancements */
+    @keyframes fadeIn { from {opacity:0} to {opacity:1} }
+    @keyframes floatUp { from {transform: translateY(8px); opacity:.9} to {transform: translateY(0); opacity:1} }
+    .brand-title h1{ animation: floatUp .8s ease both }
+    .hero{ animation: fadeIn 0.8s ease both }
+    .unit{ transition: transform .25s ease }
+    .unit:hover{ transform: translateY(-4px) }
+    .hero-cta{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px }
+    .btn.ghost{ background:#ffffff; color:#0b1324; border:1px solid var(--accent) }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="caratual.png" alt="Instituto Superior Antonio Ruiz de Montoya - Isologo" />
+      <div class="brand-title">
+        <h1>Maquetador de Moodle</h1>
+        <div class="tagline">“65 años viviendo la educación como misión compartida”</div>
+      </div>
+    </header>
+
+    <nav>
+      <div class="tabs">
+        <a class="tab" href="#inicio">Inicio</a>
+        <a class="tab" href="#u1">Unidad 1</a>
+        <a class="tab" href="#u2">Unidad 2</a>
+        <a class="tab" href="#u3">Unidad 3</a>
+        <a class="tab" href="#u4">Unidad 4</a>
+      </div>
+      <button class="cta" onclick="document.querySelector('#u1').scrollIntoView({behavior:'smooth'})">Comenzar</button>
+    </nav>
+
+    <section id="inicio" class="hero">
+      <div>
+        <h2 style="margin:10px 0 6px">Explora el Maquetador de Moodle</h2>
+        <p>Transformá ideas pedagógicas en aulas virtuales claras, accesibles y atractivas. En este sitio recorrés las cuatro unidades clave, con resúmenes visuales y descargas directas.</p>
+        <div class="hero-cta"><a class="btn" href="#u1">Comenzar ahora</a><a class="btn ghost" href="#u4">Ver contenidos</a></div>
+        <ul class="hero-list">
+          <li><span class="dot"></span><div><b>Roles y permisos</b> para articular equipo, entregables y flujos de trabajo.</div></li>
+          <li><span class="dot"></span><div><b>Estructura didáctica</b> y formatos de curso (temas, semanal, rejilla, etc.).</div></li>
+          <li><span class="dot"></span><div><b>Configuración y secuencias</b>: edición, finalización, restricciones y navegación.</div></li>
+          <li><span class="dot"></span><div><b>Recursos y actividades</b>: uso estratégico de archivos, páginas, foros, cuestionarios y más.</div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px">Mapa del trayecto</h3>
+        <div class="kpis">
+          <div class="kpi"><b>U1</b><span>Roles & Entregables</span></div>
+          <div class="kpi"><b>U2</b><span>Estructura del Curso</span></div>
+          <div class="kpi"><b>U3</b><span>Configuración</span></div>
+        </div>
+        <div class="kpis" style="margin-top:10px">
+          <div class="kpi"><b>U4</b><span>Recursos & Actividades</span></div>
+          <div class="kpi"><b>+</b><span>Accesibilidad</span></div>
+          <div class="kpi"><b>+</b><span>Interactividad</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="u1" class="unit">
+      <h2>Unidad 1 · Maquetador 1</h2>
+      <p class="lead">El maquetador: roles, responsabilidades, permisos y entregables en Moodle.</p>
+      <div class="grid">
+        <div class="card viz">
+          <h3 style="margin:0">Resumen visual</h3>
+          <div class="chips">
+            <span class="chip">Diseñador Instruccional</span>
+            <span class="chip">Contenidista</span>
+            <span class="chip">Maquetador</span>
+            <span class="chip">Tutor/Facilitador</span>
+            <span class="chip">Permisos y Roles</span>
+          </div>
+          <details open>
+            <summary>Flujo de trabajo sugerido</summary>
+            <ol style="margin:10px 0 0 18px">
+              <li>Recibir guía de diseño + contenidos validados.</li>
+              <li>Definir estructura y criterios de accesibilidad.</li>
+              <li>Subir y configurar recursos/actividades.</li>
+              <li>Pruebas, correcciones y checklist de calidad.</li>
+            </ol>
+          </details>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">Descripción</h3>
+          <p>
+            Identifica las tareas de cada rol en e-learning y cómo se articulan en Moodle.
+            Incluye panorama de permisos estándar (admin, gestor, profesor, estudiante, invitado) y
+            lista de entregables esperados y a producir por el maquetador.
+          </p>
+          <div class="downloads">
+            <a class="btn" href="1.MAQUETADO-U1-PDF-1ra parte.pdf" download>Descargar Documento</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="u2" class="unit">
+      <h2>Unidad 2 · Maquetador 2</h2>
+      <p class="lead">Estructura de un curso en Moodle: coherencia didáctica, formatos y diseño visual.</p>
+      <div class="grid">
+        <div class="card viz">
+          <h3 style="margin:0">Resumen visual</h3>
+          <div class="chips">
+            <span class="chip">Objetivos ↔ Contenidos</span>
+            <span class="chip">Actividades ↔ Evaluación</span>
+            <span class="chip">Formato del curso</span>
+            <span class="chip">Sección inicial</span>
+            <span class="chip">Accesibilidad</span>
+          </div>
+          <details open>
+            <summary>Esqueleto básico recomendado</summary>
+            <ul style="margin:10px 0 0 18px">
+              <li>Sección 0: bienvenida, programa, guía, cronograma.</li>
+              <li>Unidades: materiales, actividades y evaluaciones parciales.</li>
+              <li>Cierre: evaluación final y retroalimentación.</li>
+            </ul>
+          </details>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">Descripción</h3>
+          <p>
+            Aborda principios del maquetado, estructura, formatos (temas, semanal, rejilla, mosaico),
+            editor de texto y criterios de consistencia visual. Centra la alineación pedagógica para
+            una navegación clara y progresiva.
+          </p>
+          <div class="downloads">
+            <a class="btn" href="3.MAQUETADO-U2-PDF-1ra parte.pdf" download>Descargar Parte 1</a>
+            <a class="btn secondary" href="2.MAQUETADO-U2-PDF-2da parte.pdf" download>Descargar Parte 2 (alt)</a>
+            <a class="btn" href="4..MAQUETADO-U2-PDF-2da parte.pdf" download>Descargar Parte 2</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="u3" class="unit">
+      <h2>Unidad 3 · Maquetador 3</h2>
+      <p class="lead">Configuración del curso: edición, navegación, finalización y secuencias.</p>
+      <div class="grid">
+        <div class="card viz">
+          <h3 style="margin:0">Resumen visual</h3>
+          <div class="chips">
+            <span class="chip">Modo de edición</span>
+            <span class="chip">Bloques & Secciones</span>
+            <span class="chip">Finalización</span>
+            <span class="chip">Restricciones</span>
+            <span class="chip">Secuencialidad</span>
+          </div>
+          <details open>
+            <summary>Checklist de configuración</summary>
+            <ul style="margin:10px 0 0 18px">
+              <li>Formato y tema compatibles con la plataforma.</li>
+              <li>Rastreo de finalización habilitado.</li>
+              <li>Condiciones y desbloqueos por progreso.</li>
+              <li>Secciones ocultas/visibles según cronograma.</li>
+            </ul>
+          </details>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">Descripción</h3>
+          <p>
+            Introduce versiones, temas y plugins; y desarrolla la operación práctica:
+            activar edición, mover/duplicar elementos, configurar finalización de actividades,
+            restricciones de acceso y rutas de navegación limpias.
+          </p>
+          <div class="downloads">
+            <a class="btn" href="5..MAQUETADO-U3-PDF-1ra parte.pdf" download>Descargar Parte 1</a>
+            <a class="btn" href="6.MAQUETADO-U3-PDF-2da parte.pdf" download>Descargar Parte 2</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="u4" class="unit">
+      <h2>Unidad 4 · Maquetador 4</h2>
+      <p class="lead">Recursos y actividades: selección, configuración y buenas prácticas.</p>
+      <div class="grid">
+        <div class="card viz">
+          <h3 style="margin:0">Resumen visual</h3>
+          <div class="chips">
+            <span class="chip">Archivo</span>
+            <span class="chip">Página / Libro</span>
+            <span class="chip">URL</span>
+            <span class="chip">Área de texto y medios</span>
+            <span class="chip">Foro / Tarea / Cuestionario</span>
+          </div>
+          <details open>
+            <summary>Principios de uso</summary>
+            <ul style="margin:10px 0 0 18px">
+              <li>Equilibrio entre recursos (informan) y actividades (interactúan).</li>
+              <li>Configuración clara: nombre, descripción, disponibilidad y finalización.</li>
+              <li>Accesibilidad: descripciones, texto alternativo y formatos livianos.</li>
+            </ul>
+          </details>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">Descripción</h3>
+          <p>
+            Guía paso a paso para agregar y configurar recursos/actividades, con
+            secciones comunes de ajuste (general, calificación, acceso, finalización),
+            y recomendaciones para experiencia de usuario y evaluación.
+          </p>
+          <div class="downloads">
+            <a class="btn" href="7.U4_Parte_1.pdf" download>Descargar Parte 1</a>
+            <a class="btn" href="8.U4_Parte_2.pdf" download>Descargar Parte 2</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer">© Instituto Superior Antonio Ruiz de Montoya — Maquetador de Moodle. Estilo de redacción “lungo”: claro, modular, práctico y coherente en todo el contenido.</p>
+  </div>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id=a.getAttribute('href');
+        const el=document.querySelector(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}) }
+      })
+    });
+  </script>
+</body>
+</html>
